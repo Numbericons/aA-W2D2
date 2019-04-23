@@ -1,7 +1,38 @@
+class CoffeeError < StandardError 
+  def message
+    "Thanks for the coffee! Can I have some fruit?"
+  end
+end
+
+class FriendError < StandardError
+  def message
+    "We're just acquaintances, sorry!"
+  end
+end
+
+class NameError < StandardError
+  def message
+    "Name field cannot be blank!"
+  end
+end
+
+class PastimeError < StandardError
+  def message
+    "Pastime field cannot be blank!"
+  end
+end
+
 # PHASE 2
 def convert_to_int(str)
-  Integer(str)
+  begin 
+    Integer(str)
+  rescue ArgumentError => e
+    puts "ERROR: #{e}"
+    return nil unless str.is_a?(String)
+  end
 end
+
+# p convert_to_int('five')
 
 # PHASE 3
 FRUITS = ["apple", "banana", "orange"]
@@ -9,8 +40,10 @@ FRUITS = ["apple", "banana", "orange"]
 def reaction(maybe_fruit)
   if FRUITS.include? maybe_fruit
     puts "OMG, thanks so much for the #{maybe_fruit}!"
-  else 
-    raise StandardError 
+  elsif maybe_fruit == "coffee" 
+    raise CoffeeError
+  else
+    raise StandardError
   end 
 end
 
@@ -18,16 +51,33 @@ def feed_me_a_fruit
   puts "Hello, I am a friendly monster. :)"
 
   puts "Feed me a fruit! (Enter the name of a fruit:)"
-  maybe_fruit = gets.chomp
-  reaction(maybe_fruit) 
-end  
+  begin
+    maybe_fruit = gets.chomp
+    reaction(maybe_fruit) 
+  rescue CoffeeError => e
+      puts e.message
+      retry
+  end
+end 
+
 
 # PHASE 4
 class BestFriend
   def initialize(name, yrs_known, fav_pastime)
-    @name = name
-    @yrs_known = yrs_known
-    @fav_pastime = fav_pastime
+      @name = name
+      @yrs_known = yrs_known
+      @fav_pastime = fav_pastime
+
+      if yrs_known < 5
+        raise FriendError
+      end
+
+      raise NameError if name.length == 0
+      raise PastimeError if fav_pastime.length == 0
+
+
+    # rescue FriendError => e
+    #   e.message if yrs_known < 5
   end
 
   def talk_about_friendship
