@@ -68,16 +68,9 @@ class BestFriend
       @yrs_known = yrs_known
       @fav_pastime = fav_pastime
 
-      if yrs_known < 5
-        raise FriendError
-      end
-
+      raise FriendError if yrs_known < 5
       raise NameError if name.length == 0
       raise PastimeError if fav_pastime.length == 0
-
-
-    # rescue FriendError => e
-    #   e.message if yrs_known < 5
   end
 
   def talk_about_friendship
