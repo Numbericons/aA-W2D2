@@ -4,18 +4,18 @@ require "singleton"
 
 class Piece
     def initialize
-        @name = "Piece"
+        @symbol = :Piece
     end
 
     def inspect
-        @name
+        @symbol
     end
 end
 
 class NullPiece < Piece
     include Singleton
     def initialize
-        @name = "NullPiece"
+        @symbol = :Null
     end
 
     def nil?

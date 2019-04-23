@@ -59,7 +59,6 @@ class Board
     end
 end
 
-# b = Board.new
-# b.move_piece([0,0],[3,3])
-# b.move_piece([4,4],[4,3])
-# p b.grid
+b = Board.new
+b.move_piece([0,0],[3,3])
+p b.grid
