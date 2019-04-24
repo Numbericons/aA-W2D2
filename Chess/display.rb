@@ -21,8 +21,8 @@ class Display
         @board.grid.each_with_index do |row, row_i|
             row.each_with_index do |cell, cell_i|
                 if [row_i, cell_i] != @cursor.cursor_pos 
-                    print cell.to_s.white.on_black if (row_i + cell_i).odd?
-                    print cell.to_s.black.on_white if (row_i + cell_i).even?
+                    print cell.to_s.on_light_red if (row_i + cell_i).odd?
+                    print cell.to_s.on_red if (row_i + cell_i).even?
                 elsif self.cursor.selected
                     print cell.to_s.green.on_magenta
                 else
@@ -34,6 +34,6 @@ class Display
     end 
 end
 
-b = Board.new
-d = Display.new(b)
-d.take_turn
+# b = Board.new
+# d = Display.new(b)
+# d.take_turn

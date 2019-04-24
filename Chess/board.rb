@@ -17,12 +17,46 @@ class Board
     end 
 
     def populate_board
-        self.grid.each_with_index do |rows, row_i|
+        starting_order = [:R,:K,:B,:Q,:X,:B,:K,:R]
+
+        self.grid.each_with_index do |row, row_i|
             if row_i.between?(2,5)
-                rows.map!{|cell| NullPiece.instance}
-            else
-                rows.map!{|cell| Piece.new}
+                row.map!{|cell| NullPiece.instance}
+            elsif row_i == 1
+                row.each_with_index do |cell, cell_i| 
+                    add_piece([row_i, cell_i],:white, :P)
+                end
+            elsif row_i == 0
+                row.each_with_index do |cell, cell_i| 
+                    add_piece([row_i, cell_i],:white, starting_order[cell_i])
+                end
+            elsif row_i == 6
+                row.each_with_index do |cell, cell_i| 
+                    add_piece([row_i, cell_i],:black, :P)
+                end
+                # row.map!{|cell| Piece.new(:black)}
+            elsif row_i == 7
+                row.each_with_index do |cell, cell_i| 
+                    add_piece([row_i, cell_i],:black, starting_order[cell_i])
+                end
             end
+        end
+    end
+    
+    def add_piece(pos, symbol, piece_sym)
+        case piece_sym
+        when :P
+            self[pos] = Pawn.new(pos, symbol, self)
+        when :R
+            self[pos] = Rook.new(pos, symbol, self)
+        when :K
+            self[pos] = Knight.new(pos, symbol, self)
+        when :B
+            self[pos] = Bishop.new(pos, symbol, self)
+        when :X
+            self[pos] = King.new(pos, symbol, self)
+        when :Q
+            self[pos] = Queen.new(pos, symbol, self)
         end
     end
 
@@ -34,6 +68,8 @@ class Board
             end
             
             self[end_pos], self[start_pos] = self[start_pos], self[end_pos]
+            self[end_pos].position = end_pos
+            self[start_pos].position = start_pos
          
         rescue  PieceMoveError => e
             if self[start_pos].nil?
