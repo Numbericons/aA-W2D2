@@ -10,7 +10,7 @@ class PieceMoveError < StandardError
     end
 end
 class Board
-    attr_reader :grid
+    attr_reader :grid, :cursor
     def initialize
         @grid = Array.new(8) {Array.new(8)}
         populate_board
@@ -57,8 +57,9 @@ class Board
         x,y = pos
         self.grid[x][y] = value
     end
+
 end
 
-b = Board.new
-b.move_piece([0,0],[3,3])
-p b.grid
+# b = Board.new
+# b.move_piece([0,0],[3,3])
+# p b.grid

@@ -3,19 +3,25 @@
 require "singleton"
 
 class Piece
-    def initialize
-        @symbol = :Piece
+    attr_reader :color
+    def initialize(color = nil)
+        @symbol = "\u265F"
+        @color
     end
 
     def inspect
         @symbol
+    end
+
+    def to_s
+        " " + @symbol.to_s + " "
     end
 end
 
 class NullPiece < Piece
     include Singleton
     def initialize
-        @symbol = :Null
+        @symbol = " "
     end
 
     def nil?

@@ -1,5 +1,5 @@
 require "io/console"
-
+require 'byebug'
 KEYMAP = {
   " " => :space,
   "h" => :left,
@@ -33,10 +33,12 @@ MOVES = {
 class Cursor
 
   attr_reader :cursor_pos, :board
+  attr_accessor :selected
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
+    @selected = false
   end
 
   def get_input
@@ -44,7 +46,7 @@ class Cursor
     handle_key(key)
   end
 
-  private
+  #private
 
   def read_char
     STDIN.echo = false # stops the console from printing return values
@@ -77,20 +79,37 @@ class Cursor
 
   def handle_key(key)
     case key
-    when :return || :space
-        self.cursor_pos
-    when :left || :right || :up || :down
-        self.update_pos(MOVES[key])
-        nil
+    when :return    # || :space
+      self.cursor_pos
+      self.selected == false ? self.selected = true : self.selected = false
+    when :space
+      self.cursor_pos
+      self.selected == false ? self.selected = true : self.selected = false
+    when :left   # || :right || :up || :down
+      update_pos(MOVES[key])
+      nil
+    when :right
+      update_pos(MOVES[key])
+      nil
+    when :up
+      update_pos(MOVES[key])
+      nil
+    when :down
+      update_pos(MOVES[key])
+      nil
     when :ctrl_c
         Process.exit(0)
     end
   end
 
   def update_pos(diff)
-    if Board.valid_pos?(self.cursor_pos[0] + diff[0]) && Board.valid_pos?(self.cursor_pos[1] + diff[1])
-        self.cursor_pos[0] += diff[0]
-        self.cursor_pos[1] += diff[1]
+    # debugger
+    if self.board.valid_pos?([(self.cursor_pos[0] + diff[0]), (self.cursor_pos[1] + diff[1])])
+      self.cursor_pos[0] += diff[0]
+      self.cursor_pos[1] += diff[1]
+    else
+      self.cursor_pos[0]
+      self.cursor_pos[1]
     end
   end
 end
