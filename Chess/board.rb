@@ -8,6 +8,10 @@ class PieceMoveError < StandardError
     def endMessage
         "You cannot move to or from that location!"
     end
+
+    def invalidMessage
+        "This piece cannot move to that location!"
+    end
 end
 class Board
     attr_reader :grid, :cursor
@@ -63,13 +67,47 @@ class Board
     def move_piece(start_pos, end_pos)
         in_bounds = self.valid_pos?(start_pos) && self.valid_pos?(end_pos)
         begin
+            if self[start_pos].nil? || !in_bounds || !self[start_pos].valid_moves.include?(end_pos)
+                raise PieceMoveError
+            end
+            
+            #NullPiece.instance
+            if self[start_pos].color != self[end_pos].color
+                self[end_pos] = self[start_pos]
+                self[start_pos] = NullPiece.instance
+            else
+                self[end_pos], self[start_pos] = self[start_pos], self[end_pos] #collison
+                self[start_pos].position = start_pos
+            end
+            self[end_pos].position = end_pos
+         
+        rescue  PieceMoveError => e
+            if self[start_pos].nil?
+                e.nilMessage
+            elsif !in_bounds
+                e.endMessage
+            elsif !self[start_pos].valid_moves.include?(end_pos)
+                e.invalidMessage
+            end
+        end
+    end
+
+    def move_piece!(start_pos, end_pos)
+        in_bounds = self.valid_pos?(start_pos) && self.valid_pos?(end_pos)
+        begin
             if self[start_pos].nil? || !in_bounds
                 raise PieceMoveError
             end
             
-            self[end_pos], self[start_pos] = self[start_pos], self[end_pos]
+            #NullPiece.instance
+            if self[start_pos].color != self[end_pos].color
+                self[end_pos] = self[start_pos]
+                self[start_pos] = NullPiece.instance
+            else
+                self[end_pos], self[start_pos] = self[start_pos], self[end_pos] #collison
+                self[start_pos].position = start_pos
+            end
             self[end_pos].position = end_pos
-            self[start_pos].position = start_pos
          
         rescue  PieceMoveError => e
             if self[start_pos].nil?
@@ -94,8 +132,43 @@ class Board
         self.grid[x][y] = value
     end
 
-end
+    def in_check?(color)
+        our_pieces = all_pieces
+        king_pos = []
+        our_pieces.each do |piece|   #array of all pieces
+            king_pos = piece.position if piece.symbol == "\u265A" && piece.color == color
+        end
+        our_pieces.any? { |piece| piece.color != color && piece.moves.include?(king_pos) }
+    end
 
-# b = Board.new
-# b.move_piece([0,0],[3,3])
-# p b.grid
+    def all_pieces
+        pieces_arr = self.grid.flatten
+        pieces_arr.select { |piece| piece.symbol != " " }
+    end
+
+    def checkmate?(color)
+        if in_check?(color) 
+            player_pieces = all_pieces.select{|piece| piece.color == color}
+            return true if player_pieces.all? { |piece| piece.valid_moves.empty? }
+        end
+        false
+    end
+    
+    def dup
+        duped_board = Board.new # new board w/ pieces at starting positions
+        self.grid.each_with_index do |row, i|
+            row.each_with_index do |col, j|
+                #(position = nil, color = nil, board)
+                if col.symbol != " "
+                    duped_board[[i,j]] = col.class.new(col.position, col.color, col.symbol, duped_board)
+                else
+                    duped_board[[i,j]] = NullPiece.instance
+                end
+            end
+        end
+        # all_pieces.each do |piece|
+        #     piece
+        # end
+        duped_board
+    end
+end

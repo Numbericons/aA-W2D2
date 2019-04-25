@@ -1,0 +1,15 @@
+y = b.dup
+pry
+load 'game.rb'
+b = Board.new
+b.move_piece([0,0],[7,2])
+b.move_piece([7,3], [3,3])
+b.move_piece([6,4],[5,4])
+d = Display.new(b)
+b.in_check?(:black)
+b.in_check?(:white)
+
+b.move_piece([6,5], [5,5])
+b.move_piece([1,4], [3,4])
+b.move_piece([6,6], [4,6])
+b.move_piece([0,3], [4,7])

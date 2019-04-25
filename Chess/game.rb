@@ -5,6 +5,3 @@ require_relative 'piece.rb'
 require_relative 'player.rb'
 require 'byebug'
 
-b = Board.new
-d = Display.new(b)
-# d.take_turn

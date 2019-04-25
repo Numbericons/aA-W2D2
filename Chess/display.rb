@@ -18,7 +18,7 @@ class Display
     end
 
     def render
-        @board.grid.each_with_index do |row, row_i|
+        board.grid.each_with_index do |row, row_i|
             row.each_with_index do |cell, cell_i|
                 if [row_i, cell_i] != @cursor.cursor_pos 
                     print cell.to_s.on_light_red if (row_i + cell_i).odd?

@@ -26,17 +26,21 @@ module Slideable
     #poss_moves << target if self.board.valid_pos?(target) && self.board[target].nil?
     def grow_unblocked_moves_in_dir(dx, dy)
         arr = []
-        growing = true
-        curr_dx = dx
+        curr_dx =  dx
         curr_dy = dy
+        growing = true
         until growing == false #initial dx, dy    ;   second  dx, dy
             growing = false
-            target = [self.position[0] + curr_dx,self.position[1] + curr_dy]
-            if self.board.valid_pos?(target) && self.board[target].nil?
-                arr << target
-                growing = true
+            target = [self.position[0] + curr_dx, self.position[1] + curr_dy] # [0,0] + [0,1]  ;  [0,1] + [0,1]  = [0,2]
+            if self.board.valid_pos?(target) 
+                if self.board[target].nil? 
+                    arr << target
+                    growing = true
+                elsif board[target].color != self.color
+                    arr << target
+                end
             end
-            #set curr_dx, curr_dy
+            curr_dx, curr_dy = curr_dx + dx, curr_dy + dy 
         end
         arr
     end
@@ -44,17 +48,15 @@ end
 
 module Steppable
     def moves
-        debugger
-        #just need end position to be blank
         poss_moves = [] # [[1,1],[0,1]
         move_dirs.each do |pos| #king starts @ [3,3] ;  pos =[0,1]
             target = [self.position[0]+ pos[0],self.position[1]+ pos[1]]
-            poss_moves << target if self.board.valid_pos?(target) && self.board[target].nil?
-        debugger
+            if self.board.valid_pos?(target) 
+                if self.board[target].nil? || self.board[target].color != self.color
+                    poss_moves << target 
+                end
+            end
         end
         poss_moves
     end    
 end
-# if self.board.valid_pos?([(self.cursor_pos[0] + diff[0]), (self.cursor_pos[1] + diff[1])])
-#King#move_dirs
-# [-1, -1],[-1, 1],[1, 1], [1, -1], [0,1],[0,-1],[1,0],[-1,0]
