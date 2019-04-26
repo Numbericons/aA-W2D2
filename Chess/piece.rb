@@ -177,9 +177,6 @@ end
 
 class Pawn < Piece
     attr_reader :symbol, :color
-    # DIFFS = [[0,1], [0,-1]]
-    # STARTDIFFS = [[0,1],[0,2], [0,-1], [0,-2]]
-    # CAPTUREDIFFS = [[1,1], [-1,1],[-1, -1],[1,-1]]
     
     attr_reader :initial_pos
     def initialize(position = nil, color = nil, symbol = nil, board)
@@ -189,8 +186,6 @@ class Pawn < Piece
     end
     
     def moves
-        #move up one spot, check depending on color (or initial pos' y), [x + 1, y]  or [x - 1, y]
-        
         poss_moves = []
         if self.color == :white  
             diffs = [[1,0], [1,1], [1,-1]]
@@ -214,8 +209,4 @@ class Pawn < Piece
 
         poss_moves
     end
-
-    # def move_dirs
-    #     DIFFS
-    # end
 end

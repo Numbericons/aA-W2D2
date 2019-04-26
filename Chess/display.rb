@@ -9,13 +9,17 @@ class Display
         @cursor = Cursor.new([7,0],@board)
     end
 
-    def take_turn
-        until false == true
-            system("clear")
-            self.render
-            @cursor.get_input
-        end
-    end
+    # def take_turn
+    #     until false == true
+    #         cursor_input
+    #     end
+    # end
+    
+    # def cursor_input
+    #     system("clear")
+    #     self.render
+    #     @cursor.get_input
+    # end
 
     def render
         board.grid.each_with_index do |row, row_i|
@@ -33,7 +37,3 @@ class Display
         end
     end 
 end
-
-# b = Board.new
-# d = Display.new(b)
-# d.take_turn

@@ -38,7 +38,6 @@ class Board
                 row.each_with_index do |cell, cell_i| 
                     add_piece([row_i, cell_i],:black, :P)
                 end
-                # row.map!{|cell| Piece.new(:black)}
             elsif row_i == 7
                 row.each_with_index do |cell, cell_i| 
                     add_piece([row_i, cell_i],:black, starting_order[cell_i])
@@ -158,7 +157,6 @@ class Board
         duped_board = Board.new # new board w/ pieces at starting positions
         self.grid.each_with_index do |row, i|
             row.each_with_index do |col, j|
-                #(position = nil, color = nil, board)
                 if col.symbol != " "
                     duped_board[[i,j]] = col.class.new(col.position, col.color, col.symbol, duped_board)
                 else
@@ -166,9 +164,6 @@ class Board
                 end
             end
         end
-        # all_pieces.each do |piece|
-        #     piece
-        # end
         duped_board
     end
 end

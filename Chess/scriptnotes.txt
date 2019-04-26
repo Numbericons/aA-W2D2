@@ -13,3 +13,7 @@ b.move_piece([6,5], [5,5])
 b.move_piece([1,4], [3,4])
 b.move_piece([6,6], [4,6])
 b.move_piece([0,3], [4,7])
+
+load 'game.rb'
+chess = Game.new
+chess.play

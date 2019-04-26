@@ -4,7 +4,6 @@ module Slideable
     
     #call each element of DIRS corresponding to piece
     #call grow_unblock, passing in (sub[0], sub[1]) for dx, dy 
-
     #call move_dirs(in same direction) until invalid move?
     #check along the path for collision 
     def moves
@@ -20,10 +19,7 @@ module Slideable
         return  HORIZ_DIRS if self.class == Rook
         return HORIZ_DIRS + DIAG_DIRS if self.class == Queen
     end
-
-    #target = [self.position[0]+ dx,self.position[1]+ dy]
-
-    #poss_moves << target if self.board.valid_pos?(target) && self.board[target].nil?
+    
     def grow_unblocked_moves_in_dir(dx, dy)
         arr = []
         curr_dx =  dx

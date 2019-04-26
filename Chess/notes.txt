@@ -1,0 +1,3 @@
+*Switch Players
+*Moving pieces twice
+    *Not updating internal position of piece? Speculation

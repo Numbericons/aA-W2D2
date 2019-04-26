@@ -80,11 +80,11 @@ class Cursor
   def handle_key(key)
     case key
     when :return    # || :space
-      self.cursor_pos
       self.selected == false ? self.selected = true : self.selected = false
+      self.cursor_pos
     when :space
-      self.cursor_pos
       self.selected == false ? self.selected = true : self.selected = false
+      self.cursor_pos
     when :left   # || :right || :up || :down
       update_pos(MOVES[key])
       nil
